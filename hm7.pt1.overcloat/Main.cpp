@@ -4,7 +4,6 @@
 
 #include "Globals.h"
 #include "Overcloat.h"
-#include "Logic.h"
 #include "Display.h"
 
 using namespace std;
@@ -14,19 +13,19 @@ int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    Overcloat* list = new Overcloat[Overcloat::GetCount()];
+    Overcloat* list = nullptr;
 
-	//char filename[MAX_PATH] = "save.bin";
-	//FILE* file = nullptr;
-	//LogicReadData(file, reservoir, filename, size);
+	char filename[MAX_PATH] = "save.bin";
+	FILE* file = nullptr;
+	Overcloat::LogicReadData(file, list, filename);
 
 	char select = 0;
 
 	const char* menu[]
 	{
-		"Додати одяг   ",
+		"Додати товар  ",
 		"Вивести список",
-		"Видалити одяг ",
+		"Видалити товар",
 		"Редагувати    ",
 		"Порівняти типи",
 		"Порівняти ціни",
@@ -35,7 +34,7 @@ int main() {
 
 	while (true) {
 
-		LogicHideCursor(FALSE);
+		Overcloat::LogicHideCursor(FALSE);
 		DisplayMenu(menu, MENU_ROW, select);
 
 		char action = _getch();
@@ -64,30 +63,30 @@ int main() {
 				break;
 
 			case REMOVE:
-				//DisplayRemove(reservoir, size);
+				DisplayRemove(list);
 				break;
 
 			case EDIT:
-				//DisplayEdit(reservoir, size);
+				DisplayEdit(list);
 				break;
 
 			case TYPES:
-
+				DisplayTypesCmp(list);
 				break;
 
 			case PRISES:
-
+				DisplayPriceCmp(list);
 				break;
 
 			case EXIT:
-				//LogicSaveData(file, reservoir, filename, size);
+				Overcloat::LogicSaveData(file, list, filename);
 				delete[]list;
 				return 0;
 			}
 			break;
 
 		case ESC:
-			//LogicSaveData(file, reservoir, filename, size);
+			Overcloat::LogicSaveData(file, list, filename);
 			delete[]list;
 			return 0;
 		}

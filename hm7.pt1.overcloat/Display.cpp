@@ -7,16 +7,16 @@ void DisplayMenu(const char* menu[], int row, int select) {
 
 	for (int i = 0; i < row; i++) {
 
-		LogicTextColor(STANDART);
+		Overcloat::LogicTextColor(STANDART);
 
 		if (i == select) {
-			LogicTextColor(HIGHLIGHT);
+			Overcloat::LogicTextColor(HIGHLIGHT);
 			cout << " " << marker << " ";
 			cout << menu[i] << endl;
 		}
 
 		else {
-			LogicTextColor(STANDART);
+			Overcloat::LogicTextColor(STANDART);
 			cout << "   ";
 			cout << menu[i] << endl;
 		}
@@ -26,7 +26,7 @@ void DisplayMenu(const char* menu[], int row, int select) {
 void DisplayAdd(Overcloat*& list) {
 
 	system("cls");
-	LogicTextColor(STANDART);
+	Overcloat::LogicTextColor(STANDART);
 
 	int row = 4;
 	const char* str[]{ "тип   : ", "розмір: ", "колір : ", "ціна  : " };
@@ -36,29 +36,213 @@ void DisplayAdd(Overcloat*& list) {
 
 	list->AddObject(list);
 
-	LogicTextColor(HIGHLIGHT);
+	Overcloat::LogicTextColor(HIGHLIGHT);
 	cout << endl << "новий товар додано" << endl;
 
-	LogicTextColor(STANDART);
-	LogicPause();
+	Overcloat::LogicTextColor(STANDART);
+	Overcloat::LogicPause();
 }
 
 void DisplayPrint(const Overcloat* list) {
 
 	system("cls");
-	LogicTextColor(STANDART);
+	Overcloat::LogicTextColor(STANDART);
+
+	if (Overcloat::GetCount() != 0)
+		list->PrintList(list);
+
+	else
+		cout << "список порожній..." << endl;
+
+	Overcloat::LogicPause();
+}
+
+void DisplayRemove(Overcloat*& list) {
+
+	system("cls");
+	Overcloat::LogicTextColor(STANDART);
 
 	if (Overcloat::GetCount() != 0) {
 
-		for (int i = 0; i < Overcloat::GetCount(); i++) {
-			cout << "--- ТОВАР №[" << i + 1 << "] ---" << endl;
-			list[i].Print();
-			cout << "___________________" << endl;
-		}
+		list->PrintList(list);
+		Overcloat::LogicPause();
+		system("cls");
+
+		short x = 0, y = 3;
+		int index = 0, min = 1, max = Overcloat::GetCount();
+
+		cout << "для виделення введіть номер товару у списку.." << endl;
+		Overcloat::LogicSetCoords(x, y);
+		Overcloat::LogicHideCursor(TRUE);
+		cout << "індекс: ";
+		Overcloat::LogicSafeInput(index, min, max);
+
+		index -= 1;
+		list->RemoveObject(list, index);
+
+		Overcloat::LogicTextColor(HIGHLIGHT);
+		cout << endl << "товар видаленно" << endl;
 	}
 
 	else
 		cout << "список порожній..." << endl;
 
-	LogicPause();
+	Overcloat::LogicTextColor(STANDART);
+	Overcloat::LogicPause();
+}
+
+void DisplayEdit(Overcloat*& list) {
+
+	system("cls");
+	Overcloat::LogicTextColor(STANDART);
+
+	if (Overcloat::GetCount() != 0) {
+
+		list->PrintList(list);
+		Overcloat::LogicPause();
+		system("cls");
+
+		short x = 0, y = 3;
+		int index = 0, min = 1, max = Overcloat::GetCount();
+
+		cout << "для редагування введіть номер товару у списку.." << endl;
+		Overcloat::LogicSetCoords(x, y);
+		Overcloat::LogicHideCursor(TRUE);
+		cout << "індекс: ";
+		Overcloat::LogicSafeInput(index, min, max);
+		system("cls");
+		Overcloat::LogicHideCursor(FALSE);
+
+		index -= 1;
+		list->EditObject(list, index);
+
+		Overcloat::LogicTextColor(HIGHLIGHT);
+		cout << endl << "список відредагованно" << endl;
+	}
+
+	else
+		cout << "список порожній..." << endl;
+
+	Overcloat::LogicTextColor(STANDART);
+	Overcloat::LogicPause();
+}
+
+void DisplayTypesCmp(Overcloat*& list) {
+
+	system("cls");
+	Overcloat::LogicTextColor(STANDART);
+
+	if (Overcloat::GetCount() > 1) {
+
+		list->PrintList(list);
+		Overcloat::LogicPause();
+		system("cls");
+
+		short x = 0, y = 3;
+		int indexFirst = 0, indexSec = 0, min = 1, max = Overcloat::GetCount();
+
+		cout << "для порівняння типів одягу введіть номер товару із списку.." << endl;
+		Overcloat::LogicSetCoords(x, y);
+		Overcloat::LogicHideCursor(TRUE);
+		cout << "індекс: ";
+		Overcloat::LogicSafeInput(indexFirst, min, max);
+		system("cls");
+		Overcloat::LogicHideCursor(FALSE);
+		indexFirst -= 1;
+
+		cout << "виберіть наступний товар для порівняння із списку.." << endl;
+		Overcloat::LogicSetCoords(x, y);
+		Overcloat::LogicHideCursor(TRUE);
+		cout << "індекс: ";
+		Overcloat::LogicSafeInput(indexSec, min, max);
+		system("cls");
+		Overcloat::LogicHideCursor(FALSE);
+		indexSec -= 1;
+
+		list[indexFirst].PrintItem();
+		cout << endl;
+		list[indexSec].PrintItem();
+		cout << endl;
+
+		Overcloat::LogicTextColor(HIGHLIGHT);
+		if (list[indexFirst] == list[indexSec])
+			cout << "одяг однакового типу";
+		else
+			cout << "одяг різних типів";
+	}
+
+	else
+		cout << "недостатньо товарів для порівняння..." << endl;
+
+	Overcloat::LogicTextColor(STANDART);
+	Overcloat::LogicPause();
+}
+
+void DisplayPriceCmp(Overcloat*& list) {
+
+	system("cls");
+	Overcloat::LogicTextColor(STANDART);
+
+	if (Overcloat::GetCount() > 1) {
+
+		list->PrintList(list);
+		Overcloat::LogicPause();
+		system("cls");
+
+		short x = 0, y = 3;
+		int indexFirst = 0, indexSec = 0, min = 1, max = Overcloat::GetCount();
+
+		cout << "для порівняння цін введіть номер товару із списку.." << endl;
+		Overcloat::LogicSetCoords(x, y);
+		Overcloat::LogicHideCursor(TRUE);
+		cout << "індекс: ";
+		Overcloat::LogicSafeInput(indexFirst, min, max);
+		system("cls");
+		Overcloat::LogicHideCursor(FALSE);
+		indexFirst -= 1;
+
+		cout << "виберіть наступний товар для порівняння із списку.." << endl;
+		Overcloat::LogicSetCoords(x, y);
+		Overcloat::LogicHideCursor(TRUE);
+		cout << "індекс: ";
+		Overcloat::LogicSafeInput(indexSec, min, max);
+		system("cls");
+		Overcloat::LogicHideCursor(FALSE);
+		indexSec -= 1;
+
+		if (list[indexFirst] > list[indexSec]) {
+
+			Overcloat::LogicTextColor(HIGHLIGHT);
+			list[indexFirst].PrintItem();
+			cout << endl;
+			cout << "дорожчий за ціною: " << endl << endl;
+			Overcloat::LogicTextColor(STANDART);
+			list[indexSec].PrintItem();
+		}
+		else if (list[indexFirst] == list[indexSec].GetPrice()) {
+
+			Overcloat::LogicTextColor(STANDART);
+			list[indexFirst].PrintItem();
+			cout << endl;
+			Overcloat::LogicTextColor(HIGHLIGHT);
+			cout << "однакові за ціною: " << endl << endl;
+			Overcloat::LogicTextColor(STANDART);
+			list[indexSec].PrintItem();
+		}
+		else {
+
+			Overcloat::LogicTextColor(STANDART);
+			list[indexFirst].PrintItem();
+			cout << endl;
+			Overcloat::LogicTextColor(HIGHLIGHT);
+			cout << "дорожчий за ціною: " << endl << endl;
+			list[indexSec].PrintItem();
+		}
+	}
+
+	else
+		cout << "недостатньо товарів для порівняння..." << endl;
+
+	Overcloat::LogicTextColor(STANDART);
+	Overcloat::LogicPause();
 }

@@ -128,13 +128,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Display.h" />
-    <ClInclude Include="Logic.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Overcloat.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Display.cpp" />
-    <ClCompile Include="Logic.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Overcloat.cpp" />
   </ItemGroup>
